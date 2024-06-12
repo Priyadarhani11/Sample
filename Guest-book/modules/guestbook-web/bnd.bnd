@@ -1,0 +1,4 @@
+Bundle-Name: guestbook-web
+Bundle-SymbolicName: com.guestbook.web
+Bundle-Version: 1.0.0
+Export-Package: com.guestbook.web.constants
