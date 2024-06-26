@@ -22,6 +22,7 @@ create table GB_GuestbookEntry (
 	name VARCHAR(75) null,
 	email VARCHAR(75) null,
 	message VARCHAR(75) null,
+	mobile LONG,
 	guestbookId LONG,
 	groupId LONG,
 	companyId LONG,

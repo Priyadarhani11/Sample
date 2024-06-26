@@ -146,6 +146,20 @@ public interface GuestbookEntryModel
 	public void setMessage(String message);
 
 	/**
+	 * Returns the mobile of this guestbook entry.
+	 *
+	 * @return the mobile of this guestbook entry
+	 */
+	public long getMobile();
+
+	/**
+	 * Sets the mobile of this guestbook entry.
+	 *
+	 * @param mobile the mobile of this guestbook entry
+	 */
+	public void setMobile(long mobile);
+
+	/**
 	 * Returns the guestbook ID of this guestbook entry.
 	 *
 	 * @return the guestbook ID of this guestbook entry

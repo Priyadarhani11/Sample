@@ -69,7 +69,7 @@ public class GuestbookEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -83,6 +83,8 @@ public class GuestbookEntryCacheModel
 		sb.append(email);
 		sb.append(", message=");
 		sb.append(message);
+		sb.append(", mobile=");
+		sb.append(mobile);
 		sb.append(", guestbookId=");
 		sb.append(guestbookId);
 		sb.append(", groupId=");
@@ -146,6 +148,7 @@ public class GuestbookEntryCacheModel
 			guestbookEntryImpl.setMessage(message);
 		}
 
+		guestbookEntryImpl.setMobile(mobile);
 		guestbookEntryImpl.setGuestbookId(guestbookId);
 		guestbookEntryImpl.setGroupId(groupId);
 		guestbookEntryImpl.setCompanyId(companyId);
@@ -204,6 +207,8 @@ public class GuestbookEntryCacheModel
 		email = objectInput.readUTF();
 		message = objectInput.readUTF();
 
+		mobile = objectInput.readLong();
+
 		guestbookId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -256,6 +261,8 @@ public class GuestbookEntryCacheModel
 			objectOutput.writeUTF(message);
 		}
 
+		objectOutput.writeLong(mobile);
+
 		objectOutput.writeLong(guestbookId);
 
 		objectOutput.writeLong(groupId);
@@ -294,6 +301,7 @@ public class GuestbookEntryCacheModel
 	public String name;
 	public String email;
 	public String message;
+	public long mobile;
 	public long guestbookId;
 	public long groupId;
 	public long companyId;

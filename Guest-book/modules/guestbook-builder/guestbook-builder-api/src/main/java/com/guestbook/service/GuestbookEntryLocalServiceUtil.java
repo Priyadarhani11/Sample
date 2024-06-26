@@ -56,12 +56,12 @@ public class GuestbookEntryLocalServiceUtil {
 
 	public static GuestbookEntry addGuestbookEntry(
 			long userId, long guestbookId, String name, String email,
-			String message,
+			String message, Long mobile,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException {
 
 		return getService().addGuestbookEntry(
-			userId, guestbookId, name, email, message, serviceContext);
+			userId, guestbookId, name, email, message, mobile, serviceContext);
 	}
 
 	/**
@@ -235,6 +235,18 @@ public class GuestbookEntryLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static GuestbookEntry getByEmailId(String emailId)
+		throws com.guestbook.exception.NoSuchGuestbookEntryException {
+
+		return getService().getByEmailId(emailId);
+	}
+
+	public static GuestbookEntry getByMobile(Long mobile)
+		throws com.guestbook.exception.NoSuchGuestbookEntryException {
+
+		return getService().getByMobile(mobile);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
 		getExportActionableDynamicQuery(
 			com.liferay.exportimport.kernel.lar.PortletDataContext
@@ -396,12 +408,13 @@ public class GuestbookEntryLocalServiceUtil {
 
 	public static GuestbookEntry updateGuestbookEntry(
 			long userId, long guestbookId, long entryId, String name,
-			String email, String message,
+			String email, String message, long mobile,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
 		return getService().updateGuestbookEntry(
-			userId, guestbookId, entryId, name, email, message, serviceContext);
+			userId, guestbookId, entryId, name, email, message, mobile,
+			serviceContext);
 	}
 
 	public static GuestbookEntryLocalService getService() {

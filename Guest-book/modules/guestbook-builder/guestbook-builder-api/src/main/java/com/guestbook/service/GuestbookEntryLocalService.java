@@ -5,6 +5,7 @@
 
 package com.guestbook.service;
 
+import com.guestbook.exception.NoSuchGuestbookEntryException;
 import com.guestbook.model.GuestbookEntry;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -72,7 +73,7 @@ public interface GuestbookEntryLocalService
 
 	public GuestbookEntry addGuestbookEntry(
 			long userId, long guestbookId, String name, String email,
-			String message, ServiceContext serviceContext)
+			String message, Long mobile, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -215,6 +216,14 @@ public interface GuestbookEntryLocalService
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public GuestbookEntry getByEmailId(String emailId)
+		throws NoSuchGuestbookEntryException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public GuestbookEntry getByMobile(Long mobile)
+		throws NoSuchGuestbookEntryException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		PortletDataContext portletDataContext);
 
@@ -340,7 +349,8 @@ public interface GuestbookEntryLocalService
 
 	public GuestbookEntry updateGuestbookEntry(
 			long userId, long guestbookId, long entryId, String name,
-			String email, String message, ServiceContext serviceContext)
+			String email, String message, long mobile,
+			ServiceContext serviceContext)
 		throws PortalException, SystemException;
 
 }

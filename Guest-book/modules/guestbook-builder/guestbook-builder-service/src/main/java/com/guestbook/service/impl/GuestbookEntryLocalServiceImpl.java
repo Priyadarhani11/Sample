@@ -8,12 +8,14 @@ package com.guestbook.service.impl;
 import com.guestbook.exception.GuestbookEntryEmailException;
 import com.guestbook.exception.GuestbookEntryMessageException;
 import com.guestbook.exception.GuestbookEntryNameException;
+import com.guestbook.exception.NoSuchGuestbookEntryException;
 import com.guestbook.model.GuestbookEntry;
 import com.guestbook.service.base.GuestbookEntryLocalServiceBaseImpl;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -31,11 +33,11 @@ import org.osgi.service.component.annotations.Component;
 	property = "model.class.name=com.guestbook.model.GuestbookEntry",
 	service = AopService.class
 )
-public class GuestbookEntryLocalServiceImpl
+public  class GuestbookEntryLocalServiceImpl
 	extends GuestbookEntryLocalServiceBaseImpl {
 	
 	public GuestbookEntry addGuestbookEntry(long userId, long guestbookId, String name,
-			String email, String message, ServiceContext serviceContext)
+			String email, String message, Long mobile, ServiceContext serviceContext)
 		throws PortalException {
 		
 		long groupId = serviceContext.getScopeGroupId();
@@ -44,7 +46,12 @@ public class GuestbookEntryLocalServiceImpl
 
 		Date now = new Date();
 
-		validate(name, email, message);
+		try {
+			validate(name, email, message, mobile);
+		} catch (GuestbookEntryMobileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		long entryId = counterLocalService.increment();
 
@@ -62,19 +69,26 @@ public class GuestbookEntryLocalServiceImpl
 		entry.setName(name);
 		entry.setEmail(email);
 		entry.setMessage(message);
+		entry.setMobile(mobile);
+		
 
 		guestbookEntryPersistence.update(entry);
 		
 			return entry;	
 	}
 	public GuestbookEntry updateGuestbookEntry(long userId, long guestbookId,
-			long entryId, String name, String email, String message,
+			long entryId, String name, String email, String message, long mobile,
 			ServiceContext serviceContext)
 		throws PortalException, SystemException {
 	
 		Date now = new Date();
 
-		validate(name, email, message);
+		try {
+			validate(name, email, message, mobile);
+		} catch (GuestbookEntryMobileException e) {
+			
+			e.printStackTrace();
+		}
 
 		GuestbookEntry entry =
 			guestbookEntryPersistence.findByPrimaryKey(entryId);
@@ -87,15 +101,28 @@ public class GuestbookEntryLocalServiceImpl
 		entry.setName(name);
 		entry.setEmail(email);
 		entry.setMessage(message);
+		entry.setMobile(mobile);
 		entry.setExpandoBridgeAttributes(serviceContext);
 
 		guestbookEntryPersistence.update(entry);
+		resourceLocalService.updateResources(
+			      user.getCompanyId(), serviceContext.getScopeGroupId(), 
+			      GuestbookEntry.class.getName(), entryId, 
+			      serviceContext.getModelPermissions());
 
 		return entry;
 	}
 	public GuestbookEntry deleteGuestbookEntry(GuestbookEntry entry) {
 
 			guestbookEntryPersistence.remove(entry);
+			try {
+				resourceLocalService.deleteResource(
+						   entry.getCompanyId(), GuestbookEntry.class.getName(),
+						   ResourceConstants.SCOPE_INDIVIDUAL, entry.getEntryId());
+			} catch (PortalException e) {
+				
+				e.printStackTrace();
+			}
 
 			return entry;
 		}
@@ -106,6 +133,14 @@ public class GuestbookEntryLocalServiceImpl
 
 		return deleteGuestbookEntry(entry);
 	}
+	
+	public GuestbookEntry getByEmailId(String emailId) throws NoSuchGuestbookEntryException {
+		return guestbookEntryPersistence.findByEmail(emailId);
+	}
+	public GuestbookEntry getByMobile(Long mobile) throws NoSuchGuestbookEntryException {
+		return guestbookEntryPersistence.findByMobile(mobile);
+	}
+	
 	public List<GuestbookEntry> getGuestbookEntries(long groupId, long guestbookId) {
 		return guestbookEntryPersistence.findByG_G(groupId, guestbookId);
 	}
@@ -119,6 +154,7 @@ public class GuestbookEntryLocalServiceImpl
 
 	public List<GuestbookEntry> getGuestbookEntries(long groupId, long guestbookId,
 			int start, int end, OrderByComparator<GuestbookEntry> obc) {
+		
 
 		return guestbookEntryPersistence.findByG_G(groupId, guestbookId, start,
 				end, obc);
@@ -131,8 +167,8 @@ public class GuestbookEntryLocalServiceImpl
 	public int getGuestbookEntriesCount(long groupId, long guestbookId) {
 		return guestbookEntryPersistence.countByG_G(groupId, guestbookId);
 	}
-	protected void validate(String name, String email, String entry)
-			throws PortalException {
+	protected void validate(String name, String email, String entry, long mobile)
+			throws PortalException, GuestbookEntryMobileException {
 
 			if (Validator.isNull(name)) {
 				throw new GuestbookEntryNameException();
@@ -141,9 +177,13 @@ public class GuestbookEntryLocalServiceImpl
 			if (!Validator.isEmailAddress(email)) {
 				throw new GuestbookEntryEmailException();
 			}
-
+			
 			if (Validator.isNull(entry)) {
 				throw new GuestbookEntryMessageException();
 			}
-	}
+		/*
+		 * if (Validator.isNull(mobile)) { throw new GuestbookEntryMobileException(); }
+		 */
+	
+}
 }

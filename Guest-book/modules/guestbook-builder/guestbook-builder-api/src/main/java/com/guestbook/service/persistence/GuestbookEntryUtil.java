@@ -691,6 +691,80 @@ public class GuestbookEntryUtil {
 	}
 
 	/**
+	 * Returns all the guestbook entries that the user has permission to view where groupId = &#63; and guestbookId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param guestbookId the guestbook ID
+	 * @return the matching guestbook entries that the user has permission to view
+	 */
+	public static List<GuestbookEntry> filterFindByG_G(
+		long groupId, long guestbookId) {
+
+		return getPersistence().filterFindByG_G(groupId, guestbookId);
+	}
+
+	/**
+	 * Returns a range of all the guestbook entries that the user has permission to view where groupId = &#63; and guestbookId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>GuestbookEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param guestbookId the guestbook ID
+	 * @param start the lower bound of the range of guestbook entries
+	 * @param end the upper bound of the range of guestbook entries (not inclusive)
+	 * @return the range of matching guestbook entries that the user has permission to view
+	 */
+	public static List<GuestbookEntry> filterFindByG_G(
+		long groupId, long guestbookId, int start, int end) {
+
+		return getPersistence().filterFindByG_G(
+			groupId, guestbookId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the guestbook entries that the user has permissions to view where groupId = &#63; and guestbookId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>GuestbookEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param guestbookId the guestbook ID
+	 * @param start the lower bound of the range of guestbook entries
+	 * @param end the upper bound of the range of guestbook entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching guestbook entries that the user has permission to view
+	 */
+	public static List<GuestbookEntry> filterFindByG_G(
+		long groupId, long guestbookId, int start, int end,
+		OrderByComparator<GuestbookEntry> orderByComparator) {
+
+		return getPersistence().filterFindByG_G(
+			groupId, guestbookId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the guestbook entries before and after the current guestbook entry in the ordered set of guestbook entries that the user has permission to view where groupId = &#63; and guestbookId = &#63;.
+	 *
+	 * @param entryId the primary key of the current guestbook entry
+	 * @param groupId the group ID
+	 * @param guestbookId the guestbook ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next guestbook entry
+	 * @throws NoSuchGuestbookEntryException if a guestbook entry with the primary key could not be found
+	 */
+	public static GuestbookEntry[] filterFindByG_G_PrevAndNext(
+			long entryId, long groupId, long guestbookId,
+			OrderByComparator<GuestbookEntry> orderByComparator)
+		throws com.guestbook.exception.NoSuchGuestbookEntryException {
+
+		return getPersistence().filterFindByG_G_PrevAndNext(
+			entryId, groupId, guestbookId, orderByComparator);
+	}
+
+	/**
 	 * Removes all the guestbook entries where groupId = &#63; and guestbookId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
@@ -709,6 +783,133 @@ public class GuestbookEntryUtil {
 	 */
 	public static int countByG_G(long groupId, long guestbookId) {
 		return getPersistence().countByG_G(groupId, guestbookId);
+	}
+
+	/**
+	 * Returns the number of guestbook entries that the user has permission to view where groupId = &#63; and guestbookId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param guestbookId the guestbook ID
+	 * @return the number of matching guestbook entries that the user has permission to view
+	 */
+	public static int filterCountByG_G(long groupId, long guestbookId) {
+		return getPersistence().filterCountByG_G(groupId, guestbookId);
+	}
+
+	/**
+	 * Returns the guestbook entry where email = &#63; or throws a <code>NoSuchGuestbookEntryException</code> if it could not be found.
+	 *
+	 * @param email the email
+	 * @return the matching guestbook entry
+	 * @throws NoSuchGuestbookEntryException if a matching guestbook entry could not be found
+	 */
+	public static GuestbookEntry findByEmail(String email)
+		throws com.guestbook.exception.NoSuchGuestbookEntryException {
+
+		return getPersistence().findByEmail(email);
+	}
+
+	/**
+	 * Returns the guestbook entry where email = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param email the email
+	 * @return the matching guestbook entry, or <code>null</code> if a matching guestbook entry could not be found
+	 */
+	public static GuestbookEntry fetchByEmail(String email) {
+		return getPersistence().fetchByEmail(email);
+	}
+
+	/**
+	 * Returns the guestbook entry where email = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param email the email
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching guestbook entry, or <code>null</code> if a matching guestbook entry could not be found
+	 */
+	public static GuestbookEntry fetchByEmail(
+		String email, boolean useFinderCache) {
+
+		return getPersistence().fetchByEmail(email, useFinderCache);
+	}
+
+	/**
+	 * Removes the guestbook entry where email = &#63; from the database.
+	 *
+	 * @param email the email
+	 * @return the guestbook entry that was removed
+	 */
+	public static GuestbookEntry removeByEmail(String email)
+		throws com.guestbook.exception.NoSuchGuestbookEntryException {
+
+		return getPersistence().removeByEmail(email);
+	}
+
+	/**
+	 * Returns the number of guestbook entries where email = &#63;.
+	 *
+	 * @param email the email
+	 * @return the number of matching guestbook entries
+	 */
+	public static int countByEmail(String email) {
+		return getPersistence().countByEmail(email);
+	}
+
+	/**
+	 * Returns the guestbook entry where mobile = &#63; or throws a <code>NoSuchGuestbookEntryException</code> if it could not be found.
+	 *
+	 * @param mobile the mobile
+	 * @return the matching guestbook entry
+	 * @throws NoSuchGuestbookEntryException if a matching guestbook entry could not be found
+	 */
+	public static GuestbookEntry findByMobile(long mobile)
+		throws com.guestbook.exception.NoSuchGuestbookEntryException {
+
+		return getPersistence().findByMobile(mobile);
+	}
+
+	/**
+	 * Returns the guestbook entry where mobile = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param mobile the mobile
+	 * @return the matching guestbook entry, or <code>null</code> if a matching guestbook entry could not be found
+	 */
+	public static GuestbookEntry fetchByMobile(long mobile) {
+		return getPersistence().fetchByMobile(mobile);
+	}
+
+	/**
+	 * Returns the guestbook entry where mobile = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param mobile the mobile
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching guestbook entry, or <code>null</code> if a matching guestbook entry could not be found
+	 */
+	public static GuestbookEntry fetchByMobile(
+		long mobile, boolean useFinderCache) {
+
+		return getPersistence().fetchByMobile(mobile, useFinderCache);
+	}
+
+	/**
+	 * Removes the guestbook entry where mobile = &#63; from the database.
+	 *
+	 * @param mobile the mobile
+	 * @return the guestbook entry that was removed
+	 */
+	public static GuestbookEntry removeByMobile(long mobile)
+		throws com.guestbook.exception.NoSuchGuestbookEntryException {
+
+		return getPersistence().removeByMobile(mobile);
+	}
+
+	/**
+	 * Returns the number of guestbook entries where mobile = &#63;.
+	 *
+	 * @param mobile the mobile
+	 * @return the number of matching guestbook entries
+	 */
+	public static int countByMobile(long mobile) {
+		return getPersistence().countByMobile(mobile);
 	}
 
 	/**

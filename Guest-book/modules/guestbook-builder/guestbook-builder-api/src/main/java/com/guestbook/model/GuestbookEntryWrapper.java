@@ -40,6 +40,7 @@ public class GuestbookEntryWrapper
 		attributes.put("name", getName());
 		attributes.put("email", getEmail());
 		attributes.put("message", getMessage());
+		attributes.put("mobile", getMobile());
 		attributes.put("guestbookId", getGuestbookId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
@@ -91,6 +92,12 @@ public class GuestbookEntryWrapper
 
 		if (message != null) {
 			setMessage(message);
+		}
+
+		Long mobile = (Long)attributes.get("mobile");
+
+		if (mobile != null) {
+			setMobile(mobile);
 		}
 
 		Long guestbookId = (Long)attributes.get("guestbookId");
@@ -233,6 +240,16 @@ public class GuestbookEntryWrapper
 	@Override
 	public String getMessage() {
 		return model.getMessage();
+	}
+
+	/**
+	 * Returns the mobile of this guestbook entry.
+	 *
+	 * @return the mobile of this guestbook entry
+	 */
+	@Override
+	public long getMobile() {
+		return model.getMobile();
 	}
 
 	/**
@@ -518,6 +535,16 @@ public class GuestbookEntryWrapper
 	@Override
 	public void setMessage(String message) {
 		model.setMessage(message);
+	}
+
+	/**
+	 * Sets the mobile of this guestbook entry.
+	 *
+	 * @param mobile the mobile of this guestbook entry
+	 */
+	@Override
+	public void setMobile(long mobile) {
+		model.setMobile(mobile);
 	}
 
 	/**

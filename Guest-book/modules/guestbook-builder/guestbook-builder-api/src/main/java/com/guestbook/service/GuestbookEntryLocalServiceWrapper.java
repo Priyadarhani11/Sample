@@ -49,12 +49,12 @@ public class GuestbookEntryLocalServiceWrapper
 	@Override
 	public com.guestbook.model.GuestbookEntry addGuestbookEntry(
 			long userId, long guestbookId, String name, String email,
-			String message,
+			String message, Long mobile,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _guestbookEntryLocalService.addGuestbookEntry(
-			userId, guestbookId, name, email, message, serviceContext);
+			userId, guestbookId, name, email, message, mobile, serviceContext);
 	}
 
 	/**
@@ -260,6 +260,20 @@ public class GuestbookEntryLocalServiceWrapper
 	}
 
 	@Override
+	public com.guestbook.model.GuestbookEntry getByEmailId(String emailId)
+		throws com.guestbook.exception.NoSuchGuestbookEntryException {
+
+		return _guestbookEntryLocalService.getByEmailId(emailId);
+	}
+
+	@Override
+	public com.guestbook.model.GuestbookEntry getByMobile(Long mobile)
+		throws com.guestbook.exception.NoSuchGuestbookEntryException {
+
+		return _guestbookEntryLocalService.getByMobile(mobile);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
 		getExportActionableDynamicQuery(
 			com.liferay.exportimport.kernel.lar.PortletDataContext
@@ -448,13 +462,14 @@ public class GuestbookEntryLocalServiceWrapper
 	@Override
 	public com.guestbook.model.GuestbookEntry updateGuestbookEntry(
 			long userId, long guestbookId, long entryId, String name,
-			String email, String message,
+			String email, String message, long mobile,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			   com.liferay.portal.kernel.exception.SystemException {
 
 		return _guestbookEntryLocalService.updateGuestbookEntry(
-			userId, guestbookId, entryId, name, email, message, serviceContext);
+			userId, guestbookId, entryId, name, email, message, mobile,
+			serviceContext);
 	}
 
 	@Override

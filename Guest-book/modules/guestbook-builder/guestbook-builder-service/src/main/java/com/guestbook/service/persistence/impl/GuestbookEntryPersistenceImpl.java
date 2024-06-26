@@ -22,11 +22,13 @@ import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
@@ -36,6 +38,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
@@ -43,6 +46,7 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1915,6 +1919,355 @@ public class GuestbookEntryPersistenceImpl
 	}
 
 	/**
+	 * Returns all the guestbook entries that the user has permission to view where groupId = &#63; and guestbookId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param guestbookId the guestbook ID
+	 * @return the matching guestbook entries that the user has permission to view
+	 */
+	@Override
+	public List<GuestbookEntry> filterFindByG_G(
+		long groupId, long guestbookId) {
+
+		return filterFindByG_G(
+			groupId, guestbookId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the guestbook entries that the user has permission to view where groupId = &#63; and guestbookId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>GuestbookEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param guestbookId the guestbook ID
+	 * @param start the lower bound of the range of guestbook entries
+	 * @param end the upper bound of the range of guestbook entries (not inclusive)
+	 * @return the range of matching guestbook entries that the user has permission to view
+	 */
+	@Override
+	public List<GuestbookEntry> filterFindByG_G(
+		long groupId, long guestbookId, int start, int end) {
+
+		return filterFindByG_G(groupId, guestbookId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the guestbook entries that the user has permissions to view where groupId = &#63; and guestbookId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>GuestbookEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param guestbookId the guestbook ID
+	 * @param start the lower bound of the range of guestbook entries
+	 * @param end the upper bound of the range of guestbook entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching guestbook entries that the user has permission to view
+	 */
+	@Override
+	public List<GuestbookEntry> filterFindByG_G(
+		long groupId, long guestbookId, int start, int end,
+		OrderByComparator<GuestbookEntry> orderByComparator) {
+
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByG_G(
+				groupId, guestbookId, start, end, orderByComparator);
+		}
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByFields().length * 2));
+		}
+		else {
+			sb = new StringBundler(5);
+		}
+
+		if (getDB().isSupportsInlineDistinct()) {
+			sb.append(_FILTER_SQL_SELECT_GUESTBOOKENTRY_WHERE);
+		}
+		else {
+			sb.append(
+				_FILTER_SQL_SELECT_GUESTBOOKENTRY_NO_INLINE_DISTINCT_WHERE_1);
+		}
+
+		sb.append(_FINDER_COLUMN_G_G_GROUPID_2);
+
+		sb.append(_FINDER_COLUMN_G_G_GUESTBOOKID_2);
+
+		if (!getDB().isSupportsInlineDistinct()) {
+			sb.append(
+				_FILTER_SQL_SELECT_GUESTBOOKENTRY_NO_INLINE_DISTINCT_WHERE_2);
+		}
+
+		if (orderByComparator != null) {
+			if (getDB().isSupportsInlineDistinct()) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
+			}
+			else {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
+			}
+		}
+		else {
+			if (getDB().isSupportsInlineDistinct()) {
+				sb.append(GuestbookEntryModelImpl.ORDER_BY_JPQL);
+			}
+			else {
+				sb.append(GuestbookEntryModelImpl.ORDER_BY_SQL);
+			}
+		}
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(
+			sb.toString(), GuestbookEntry.class.getName(),
+			_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+
+			if (getDB().isSupportsInlineDistinct()) {
+				sqlQuery.addEntity(
+					_FILTER_ENTITY_ALIAS, GuestbookEntryImpl.class);
+			}
+			else {
+				sqlQuery.addEntity(
+					_FILTER_ENTITY_TABLE, GuestbookEntryImpl.class);
+			}
+
+			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+
+			queryPos.add(groupId);
+
+			queryPos.add(guestbookId);
+
+			return (List<GuestbookEntry>)QueryUtil.list(
+				sqlQuery, getDialect(), start, end);
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	/**
+	 * Returns the guestbook entries before and after the current guestbook entry in the ordered set of guestbook entries that the user has permission to view where groupId = &#63; and guestbookId = &#63;.
+	 *
+	 * @param entryId the primary key of the current guestbook entry
+	 * @param groupId the group ID
+	 * @param guestbookId the guestbook ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next guestbook entry
+	 * @throws NoSuchGuestbookEntryException if a guestbook entry with the primary key could not be found
+	 */
+	@Override
+	public GuestbookEntry[] filterFindByG_G_PrevAndNext(
+			long entryId, long groupId, long guestbookId,
+			OrderByComparator<GuestbookEntry> orderByComparator)
+		throws NoSuchGuestbookEntryException {
+
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByG_G_PrevAndNext(
+				entryId, groupId, guestbookId, orderByComparator);
+		}
+
+		GuestbookEntry guestbookEntry = findByPrimaryKey(entryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			GuestbookEntry[] array = new GuestbookEntryImpl[3];
+
+			array[0] = filterGetByG_G_PrevAndNext(
+				session, guestbookEntry, groupId, guestbookId,
+				orderByComparator, true);
+
+			array[1] = guestbookEntry;
+
+			array[2] = filterGetByG_G_PrevAndNext(
+				session, guestbookEntry, groupId, guestbookId,
+				orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected GuestbookEntry filterGetByG_G_PrevAndNext(
+		Session session, GuestbookEntry guestbookEntry, long groupId,
+		long guestbookId, OrderByComparator<GuestbookEntry> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(5);
+		}
+
+		if (getDB().isSupportsInlineDistinct()) {
+			sb.append(_FILTER_SQL_SELECT_GUESTBOOKENTRY_WHERE);
+		}
+		else {
+			sb.append(
+				_FILTER_SQL_SELECT_GUESTBOOKENTRY_NO_INLINE_DISTINCT_WHERE_1);
+		}
+
+		sb.append(_FINDER_COLUMN_G_G_GROUPID_2);
+
+		sb.append(_FINDER_COLUMN_G_G_GUESTBOOKID_2);
+
+		if (!getDB().isSupportsInlineDistinct()) {
+			sb.append(
+				_FILTER_SQL_SELECT_GUESTBOOKENTRY_NO_INLINE_DISTINCT_WHERE_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				if (getDB().isSupportsInlineDistinct()) {
+					sb.append(
+						getColumnName(
+							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
+							true));
+				}
+				else {
+					sb.append(
+						getColumnName(
+							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+							true));
+				}
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				if (getDB().isSupportsInlineDistinct()) {
+					sb.append(
+						getColumnName(
+							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
+				}
+				else {
+					sb.append(
+						getColumnName(
+							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
+				}
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			if (getDB().isSupportsInlineDistinct()) {
+				sb.append(GuestbookEntryModelImpl.ORDER_BY_JPQL);
+			}
+			else {
+				sb.append(GuestbookEntryModelImpl.ORDER_BY_SQL);
+			}
+		}
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(
+			sb.toString(), GuestbookEntry.class.getName(),
+			_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+
+		SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+
+		sqlQuery.setFirstResult(0);
+		sqlQuery.setMaxResults(2);
+
+		if (getDB().isSupportsInlineDistinct()) {
+			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, GuestbookEntryImpl.class);
+		}
+		else {
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, GuestbookEntryImpl.class);
+		}
+
+		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+
+		queryPos.add(groupId);
+
+		queryPos.add(guestbookId);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						guestbookEntry)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<GuestbookEntry> list = sqlQuery.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
 	 * Removes all the guestbook entries where groupId = &#63; and guestbookId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
@@ -1985,11 +2338,515 @@ public class GuestbookEntryPersistenceImpl
 		return count.intValue();
 	}
 
+	/**
+	 * Returns the number of guestbook entries that the user has permission to view where groupId = &#63; and guestbookId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param guestbookId the guestbook ID
+	 * @return the number of matching guestbook entries that the user has permission to view
+	 */
+	@Override
+	public int filterCountByG_G(long groupId, long guestbookId) {
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return countByG_G(groupId, guestbookId);
+		}
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append(_FILTER_SQL_COUNT_GUESTBOOKENTRY_WHERE);
+
+		sb.append(_FINDER_COLUMN_G_G_GROUPID_2);
+
+		sb.append(_FINDER_COLUMN_G_G_GUESTBOOKID_2);
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(
+			sb.toString(), GuestbookEntry.class.getName(),
+			_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+
+			sqlQuery.addScalar(
+				COUNT_COLUMN_NAME, com.liferay.portal.kernel.dao.orm.Type.LONG);
+
+			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+
+			queryPos.add(groupId);
+
+			queryPos.add(guestbookId);
+
+			Long count = (Long)sqlQuery.uniqueResult();
+
+			return count.intValue();
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
 	private static final String _FINDER_COLUMN_G_G_GROUPID_2 =
 		"guestbookEntry.groupId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_G_GUESTBOOKID_2 =
 		"guestbookEntry.guestbookId = ?";
+
+	private FinderPath _finderPathFetchByEmail;
+	private FinderPath _finderPathCountByEmail;
+
+	/**
+	 * Returns the guestbook entry where email = &#63; or throws a <code>NoSuchGuestbookEntryException</code> if it could not be found.
+	 *
+	 * @param email the email
+	 * @return the matching guestbook entry
+	 * @throws NoSuchGuestbookEntryException if a matching guestbook entry could not be found
+	 */
+	@Override
+	public GuestbookEntry findByEmail(String email)
+		throws NoSuchGuestbookEntryException {
+
+		GuestbookEntry guestbookEntry = fetchByEmail(email);
+
+		if (guestbookEntry == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("email=");
+			sb.append(email);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchGuestbookEntryException(sb.toString());
+		}
+
+		return guestbookEntry;
+	}
+
+	/**
+	 * Returns the guestbook entry where email = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param email the email
+	 * @return the matching guestbook entry, or <code>null</code> if a matching guestbook entry could not be found
+	 */
+	@Override
+	public GuestbookEntry fetchByEmail(String email) {
+		return fetchByEmail(email, true);
+	}
+
+	/**
+	 * Returns the guestbook entry where email = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param email the email
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching guestbook entry, or <code>null</code> if a matching guestbook entry could not be found
+	 */
+	@Override
+	public GuestbookEntry fetchByEmail(String email, boolean useFinderCache) {
+		email = Objects.toString(email, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {email};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByEmail, finderArgs, this);
+		}
+
+		if (result instanceof GuestbookEntry) {
+			GuestbookEntry guestbookEntry = (GuestbookEntry)result;
+
+			if (!Objects.equals(email, guestbookEntry.getEmail())) {
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_SELECT_GUESTBOOKENTRY_WHERE);
+
+			boolean bindEmail = false;
+
+			if (email.isEmpty()) {
+				sb.append(_FINDER_COLUMN_EMAIL_EMAIL_3);
+			}
+			else {
+				bindEmail = true;
+
+				sb.append(_FINDER_COLUMN_EMAIL_EMAIL_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindEmail) {
+					queryPos.add(email);
+				}
+
+				List<GuestbookEntry> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByEmail, finderArgs, list);
+					}
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {email};
+							}
+
+							_log.warn(
+								"GuestbookEntryPersistenceImpl.fetchByEmail(String, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					GuestbookEntry guestbookEntry = list.get(0);
+
+					result = guestbookEntry;
+
+					cacheResult(guestbookEntry);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (GuestbookEntry)result;
+		}
+	}
+
+	/**
+	 * Removes the guestbook entry where email = &#63; from the database.
+	 *
+	 * @param email the email
+	 * @return the guestbook entry that was removed
+	 */
+	@Override
+	public GuestbookEntry removeByEmail(String email)
+		throws NoSuchGuestbookEntryException {
+
+		GuestbookEntry guestbookEntry = findByEmail(email);
+
+		return remove(guestbookEntry);
+	}
+
+	/**
+	 * Returns the number of guestbook entries where email = &#63;.
+	 *
+	 * @param email the email
+	 * @return the number of matching guestbook entries
+	 */
+	@Override
+	public int countByEmail(String email) {
+		email = Objects.toString(email, "");
+
+		FinderPath finderPath = _finderPathCountByEmail;
+
+		Object[] finderArgs = new Object[] {email};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_GUESTBOOKENTRY_WHERE);
+
+			boolean bindEmail = false;
+
+			if (email.isEmpty()) {
+				sb.append(_FINDER_COLUMN_EMAIL_EMAIL_3);
+			}
+			else {
+				bindEmail = true;
+
+				sb.append(_FINDER_COLUMN_EMAIL_EMAIL_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindEmail) {
+					queryPos.add(email);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_EMAIL_EMAIL_2 =
+		"guestbookEntry.email = ?";
+
+	private static final String _FINDER_COLUMN_EMAIL_EMAIL_3 =
+		"(guestbookEntry.email IS NULL OR guestbookEntry.email = '')";
+
+	private FinderPath _finderPathFetchByMobile;
+	private FinderPath _finderPathCountByMobile;
+
+	/**
+	 * Returns the guestbook entry where mobile = &#63; or throws a <code>NoSuchGuestbookEntryException</code> if it could not be found.
+	 *
+	 * @param mobile the mobile
+	 * @return the matching guestbook entry
+	 * @throws NoSuchGuestbookEntryException if a matching guestbook entry could not be found
+	 */
+	@Override
+	public GuestbookEntry findByMobile(long mobile)
+		throws NoSuchGuestbookEntryException {
+
+		GuestbookEntry guestbookEntry = fetchByMobile(mobile);
+
+		if (guestbookEntry == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("mobile=");
+			sb.append(mobile);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchGuestbookEntryException(sb.toString());
+		}
+
+		return guestbookEntry;
+	}
+
+	/**
+	 * Returns the guestbook entry where mobile = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param mobile the mobile
+	 * @return the matching guestbook entry, or <code>null</code> if a matching guestbook entry could not be found
+	 */
+	@Override
+	public GuestbookEntry fetchByMobile(long mobile) {
+		return fetchByMobile(mobile, true);
+	}
+
+	/**
+	 * Returns the guestbook entry where mobile = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param mobile the mobile
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching guestbook entry, or <code>null</code> if a matching guestbook entry could not be found
+	 */
+	@Override
+	public GuestbookEntry fetchByMobile(long mobile, boolean useFinderCache) {
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {mobile};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByMobile, finderArgs, this);
+		}
+
+		if (result instanceof GuestbookEntry) {
+			GuestbookEntry guestbookEntry = (GuestbookEntry)result;
+
+			if (mobile != guestbookEntry.getMobile()) {
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_SELECT_GUESTBOOKENTRY_WHERE);
+
+			sb.append(_FINDER_COLUMN_MOBILE_MOBILE_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(mobile);
+
+				List<GuestbookEntry> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByMobile, finderArgs, list);
+					}
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {mobile};
+							}
+
+							_log.warn(
+								"GuestbookEntryPersistenceImpl.fetchByMobile(long, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					GuestbookEntry guestbookEntry = list.get(0);
+
+					result = guestbookEntry;
+
+					cacheResult(guestbookEntry);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (GuestbookEntry)result;
+		}
+	}
+
+	/**
+	 * Removes the guestbook entry where mobile = &#63; from the database.
+	 *
+	 * @param mobile the mobile
+	 * @return the guestbook entry that was removed
+	 */
+	@Override
+	public GuestbookEntry removeByMobile(long mobile)
+		throws NoSuchGuestbookEntryException {
+
+		GuestbookEntry guestbookEntry = findByMobile(mobile);
+
+		return remove(guestbookEntry);
+	}
+
+	/**
+	 * Returns the number of guestbook entries where mobile = &#63;.
+	 *
+	 * @param mobile the mobile
+	 * @return the number of matching guestbook entries
+	 */
+	@Override
+	public int countByMobile(long mobile) {
+		FinderPath finderPath = _finderPathCountByMobile;
+
+		Object[] finderArgs = new Object[] {mobile};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_GUESTBOOKENTRY_WHERE);
+
+			sb.append(_FINDER_COLUMN_MOBILE_MOBILE_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(mobile);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_MOBILE_MOBILE_2 =
+		"guestbookEntry.mobile = ?";
 
 	public GuestbookEntryPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -2022,6 +2879,14 @@ public class GuestbookEntryPersistenceImpl
 			new Object[] {
 				guestbookEntry.getUuid(), guestbookEntry.getGroupId()
 			},
+			guestbookEntry);
+
+		finderCache.putResult(
+			_finderPathFetchByEmail, new Object[] {guestbookEntry.getEmail()},
+			guestbookEntry);
+
+		finderCache.putResult(
+			_finderPathFetchByMobile, new Object[] {guestbookEntry.getMobile()},
 			guestbookEntry);
 	}
 
@@ -2105,6 +2970,18 @@ public class GuestbookEntryPersistenceImpl
 		finderCache.putResult(_finderPathCountByUUID_G, args, Long.valueOf(1));
 		finderCache.putResult(
 			_finderPathFetchByUUID_G, args, guestbookEntryModelImpl);
+
+		args = new Object[] {guestbookEntryModelImpl.getEmail()};
+
+		finderCache.putResult(_finderPathCountByEmail, args, Long.valueOf(1));
+		finderCache.putResult(
+			_finderPathFetchByEmail, args, guestbookEntryModelImpl);
+
+		args = new Object[] {guestbookEntryModelImpl.getMobile()};
+
+		finderCache.putResult(_finderPathCountByMobile, args, Long.valueOf(1));
+		finderCache.putResult(
+			_finderPathFetchByMobile, args, guestbookEntryModelImpl);
 	}
 
 	/**
@@ -2644,6 +3521,25 @@ public class GuestbookEntryPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"groupId", "guestbookId"}, false);
 
+		_finderPathFetchByEmail = new FinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByEmail",
+			new String[] {String.class.getName()}, new String[] {"email"},
+			true);
+
+		_finderPathCountByEmail = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByEmail",
+			new String[] {String.class.getName()}, new String[] {"email"},
+			false);
+
+		_finderPathFetchByMobile = new FinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByMobile",
+			new String[] {Long.class.getName()}, new String[] {"mobile"}, true);
+
+		_finderPathCountByMobile = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMobile",
+			new String[] {Long.class.getName()}, new String[] {"mobile"},
+			false);
+
 		GuestbookEntryUtil.setPersistence(this);
 	}
 
@@ -2698,7 +3594,30 @@ public class GuestbookEntryPersistenceImpl
 	private static final String _SQL_COUNT_GUESTBOOKENTRY_WHERE =
 		"SELECT COUNT(guestbookEntry) FROM GuestbookEntry guestbookEntry WHERE ";
 
+	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
+		"guestbookEntry.entryId";
+
+	private static final String _FILTER_SQL_SELECT_GUESTBOOKENTRY_WHERE =
+		"SELECT DISTINCT {guestbookEntry.*} FROM GB_GuestbookEntry guestbookEntry WHERE ";
+
+	private static final String
+		_FILTER_SQL_SELECT_GUESTBOOKENTRY_NO_INLINE_DISTINCT_WHERE_1 =
+			"SELECT {GB_GuestbookEntry.*} FROM (SELECT DISTINCT guestbookEntry.entryId FROM GB_GuestbookEntry guestbookEntry WHERE ";
+
+	private static final String
+		_FILTER_SQL_SELECT_GUESTBOOKENTRY_NO_INLINE_DISTINCT_WHERE_2 =
+			") TEMP_TABLE INNER JOIN GB_GuestbookEntry ON TEMP_TABLE.entryId = GB_GuestbookEntry.entryId";
+
+	private static final String _FILTER_SQL_COUNT_GUESTBOOKENTRY_WHERE =
+		"SELECT COUNT(DISTINCT guestbookEntry.entryId) AS COUNT_VALUE FROM GB_GuestbookEntry guestbookEntry WHERE ";
+
+	private static final String _FILTER_ENTITY_ALIAS = "guestbookEntry";
+
+	private static final String _FILTER_ENTITY_TABLE = "GB_GuestbookEntry";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "guestbookEntry.";
+
+	private static final String _ORDER_BY_ENTITY_TABLE = "GB_GuestbookEntry.";
 
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
 		"No GuestbookEntry exists with the primary key ";

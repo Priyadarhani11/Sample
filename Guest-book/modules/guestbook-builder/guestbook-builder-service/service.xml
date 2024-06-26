@@ -31,10 +31,6 @@
 <column name="statusByUserName" type="String" />
 <column name="statusDate" type="Date" />
 
-  <finder name="GroupId" return-type="Collection">
-        <finder-column name="groupId" />
-    </finder>
-
 
 	</entity>
 	
@@ -48,6 +44,7 @@
 <column name="name" type="String" />
 <column name="email" type="String" />
 <column name="message" type="String" />
+<column name="mobile" type="long" />
 <column name="guestbookId" type="long" />
 
 <!-- Group instance -->
@@ -77,6 +74,13 @@
         <finder-column name="groupId" />
         <finder-column name="guestbookId" />
     </finder>
+    <finder name="Email" return-type="GuestbookEntry">
+            <finder-column name="email" />
+        </finder>
+         <finder name="Mobile" return-type="GuestbookEntry">
+            <finder-column name="mobile" />
+        </finder>
+        
 
  <exceptions>
         <exception>GuestbookEntryEmail</exception>

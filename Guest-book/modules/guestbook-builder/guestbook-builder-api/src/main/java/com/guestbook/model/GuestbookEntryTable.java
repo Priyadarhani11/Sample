@@ -36,6 +36,8 @@ public class GuestbookEntryTable extends BaseTable<GuestbookEntryTable> {
 		"email", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<GuestbookEntryTable, String> message = createColumn(
 		"message", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<GuestbookEntryTable, Long> mobile = createColumn(
+		"mobile", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<GuestbookEntryTable, Long> guestbookId = createColumn(
 		"guestbookId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<GuestbookEntryTable, Long> groupId = createColumn(

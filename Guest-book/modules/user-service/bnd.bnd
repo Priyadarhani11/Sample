@@ -1,0 +1,3 @@
+Bundle-Name: user-service
+Bundle-SymbolicName: com.user.service
+Bundle-Version: 1.0.0

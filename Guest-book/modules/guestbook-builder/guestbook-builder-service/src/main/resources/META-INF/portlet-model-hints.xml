@@ -24,6 +24,7 @@
 		<field name="name" type="String" />
 		<field name="email" type="String" />
 		<field name="message" type="String" />
+		<field name="mobile" type="long" />
 		<field name="guestbookId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />

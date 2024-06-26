@@ -70,12 +70,12 @@ public class GuestbookEntryModelImpl
 		{"mvccVersion", Types.BIGINT}, {"uuid_", Types.VARCHAR},
 		{"entryId", Types.BIGINT}, {"name", Types.VARCHAR},
 		{"email", Types.VARCHAR}, {"message", Types.VARCHAR},
-		{"guestbookId", Types.BIGINT}, {"groupId", Types.BIGINT},
-		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
-		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedDate", Types.TIMESTAMP}, {"status", Types.INTEGER},
-		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
-		{"statusDate", Types.TIMESTAMP}
+		{"mobile", Types.BIGINT}, {"guestbookId", Types.BIGINT},
+		{"groupId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
+		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
+		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -88,6 +88,7 @@ public class GuestbookEntryModelImpl
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("email", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("message", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("mobile", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("guestbookId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
@@ -102,7 +103,7 @@ public class GuestbookEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table GB_GuestbookEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,entryId LONG not null primary key,name VARCHAR(75) null,email VARCHAR(75) null,message VARCHAR(75) null,guestbookId LONG,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
+		"create table GB_GuestbookEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,entryId LONG not null primary key,name VARCHAR(75) null,email VARCHAR(75) null,message VARCHAR(75) null,mobile LONG,guestbookId LONG,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table GB_GuestbookEntry";
 
@@ -128,26 +129,38 @@ public class GuestbookEntryModelImpl
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long GROUPID_COLUMN_BITMASK = 2L;
+	public static final long EMAIL_COLUMN_BITMASK = 2L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long GUESTBOOKID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long UUID_COLUMN_BITMASK = 8L;
+	public static final long GUESTBOOKID_COLUMN_BITMASK = 8L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long MOBILE_COLUMN_BITMASK = 16L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 32L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -266,6 +279,7 @@ public class GuestbookEntryModelImpl
 			attributeGetterFunctions.put("name", GuestbookEntry::getName);
 			attributeGetterFunctions.put("email", GuestbookEntry::getEmail);
 			attributeGetterFunctions.put("message", GuestbookEntry::getMessage);
+			attributeGetterFunctions.put("mobile", GuestbookEntry::getMobile);
 			attributeGetterFunctions.put(
 				"guestbookId", GuestbookEntry::getGuestbookId);
 			attributeGetterFunctions.put("groupId", GuestbookEntry::getGroupId);
@@ -321,6 +335,9 @@ public class GuestbookEntryModelImpl
 			attributeSetterBiConsumers.put(
 				"message",
 				(BiConsumer<GuestbookEntry, String>)GuestbookEntry::setMessage);
+			attributeSetterBiConsumers.put(
+				"mobile",
+				(BiConsumer<GuestbookEntry, Long>)GuestbookEntry::setMobile);
 			attributeSetterBiConsumers.put(
 				"guestbookId",
 				(BiConsumer<GuestbookEntry, Long>)
@@ -467,6 +484,15 @@ public class GuestbookEntryModelImpl
 		_email = email;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public String getOriginalEmail() {
+		return getColumnOriginalValue("email");
+	}
+
 	@JSON
 	@Override
 	public String getMessage() {
@@ -485,6 +511,30 @@ public class GuestbookEntryModelImpl
 		}
 
 		_message = message;
+	}
+
+	@JSON
+	@Override
+	public long getMobile() {
+		return _mobile;
+	}
+
+	@Override
+	public void setMobile(long mobile) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_mobile = mobile;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalMobile() {
+		return GetterUtil.getLong(this.<Long>getColumnOriginalValue("mobile"));
 	}
 
 	@JSON
@@ -877,6 +927,7 @@ public class GuestbookEntryModelImpl
 		guestbookEntryImpl.setName(getName());
 		guestbookEntryImpl.setEmail(getEmail());
 		guestbookEntryImpl.setMessage(getMessage());
+		guestbookEntryImpl.setMobile(getMobile());
 		guestbookEntryImpl.setGuestbookId(getGuestbookId());
 		guestbookEntryImpl.setGroupId(getGroupId());
 		guestbookEntryImpl.setCompanyId(getCompanyId());
@@ -909,6 +960,8 @@ public class GuestbookEntryModelImpl
 			this.<String>getColumnOriginalValue("email"));
 		guestbookEntryImpl.setMessage(
 			this.<String>getColumnOriginalValue("message"));
+		guestbookEntryImpl.setMobile(
+			this.<Long>getColumnOriginalValue("mobile"));
 		guestbookEntryImpl.setGuestbookId(
 			this.<Long>getColumnOriginalValue("guestbookId"));
 		guestbookEntryImpl.setGroupId(
@@ -1046,6 +1099,8 @@ public class GuestbookEntryModelImpl
 			guestbookEntryCacheModel.message = null;
 		}
 
+		guestbookEntryCacheModel.mobile = getMobile();
+
 		guestbookEntryCacheModel.guestbookId = getGuestbookId();
 
 		guestbookEntryCacheModel.groupId = getGroupId();
@@ -1168,6 +1223,7 @@ public class GuestbookEntryModelImpl
 	private String _name;
 	private String _email;
 	private String _message;
+	private long _mobile;
 	private long _guestbookId;
 	private long _groupId;
 	private long _companyId;
@@ -1217,6 +1273,7 @@ public class GuestbookEntryModelImpl
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("email", _email);
 		_columnOriginalValues.put("message", _message);
+		_columnOriginalValues.put("mobile", _mobile);
 		_columnOriginalValues.put("guestbookId", _guestbookId);
 		_columnOriginalValues.put("groupId", _groupId);
 		_columnOriginalValues.put("companyId", _companyId);
@@ -1263,27 +1320,29 @@ public class GuestbookEntryModelImpl
 
 		columnBitmasks.put("message", 32L);
 
-		columnBitmasks.put("guestbookId", 64L);
+		columnBitmasks.put("mobile", 64L);
 
-		columnBitmasks.put("groupId", 128L);
+		columnBitmasks.put("guestbookId", 128L);
 
-		columnBitmasks.put("companyId", 256L);
+		columnBitmasks.put("groupId", 256L);
 
-		columnBitmasks.put("userId", 512L);
+		columnBitmasks.put("companyId", 512L);
 
-		columnBitmasks.put("userName", 1024L);
+		columnBitmasks.put("userId", 1024L);
 
-		columnBitmasks.put("createDate", 2048L);
+		columnBitmasks.put("userName", 2048L);
 
-		columnBitmasks.put("modifiedDate", 4096L);
+		columnBitmasks.put("createDate", 4096L);
 
-		columnBitmasks.put("status", 8192L);
+		columnBitmasks.put("modifiedDate", 8192L);
 
-		columnBitmasks.put("statusByUserId", 16384L);
+		columnBitmasks.put("status", 16384L);
 
-		columnBitmasks.put("statusByUserName", 32768L);
+		columnBitmasks.put("statusByUserId", 32768L);
 
-		columnBitmasks.put("statusDate", 65536L);
+		columnBitmasks.put("statusByUserName", 65536L);
+
+		columnBitmasks.put("statusDate", 131072L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

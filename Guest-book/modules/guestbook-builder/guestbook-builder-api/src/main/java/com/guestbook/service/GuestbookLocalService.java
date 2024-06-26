@@ -116,6 +116,10 @@ public interface GuestbookLocalService
 	@Indexable(type = IndexableType.DELETE)
 	public Guestbook deleteGuestbook(long guestbookId) throws PortalException;
 
+	public Guestbook deleteGuestbook(
+			long guestbookId, ServiceContext serviceContext)
+		throws PortalException, SystemException;
+
 	/**
 	 * @throws PortalException
 	 */
@@ -251,16 +255,6 @@ public interface GuestbookLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Guestbook> getGuestbooks(int start, int end);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Guestbook> getGuestbooks(long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Guestbook> getGuestbooks(long groupId, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Guestbook> getGuestbooks(
-		long groupId, int start, int end, OrderByComparator<Guestbook> obc);
-
 	/**
 	 * Returns all the guestbooks matching the UUID and company.
 	 *
@@ -296,9 +290,6 @@ public interface GuestbookLocalService
 	public int getGuestbooksCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getGuestbooksCount(long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
@@ -328,5 +319,10 @@ public interface GuestbookLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public Guestbook updateGuestbook(Guestbook guestbook);
+
+	public Guestbook updateGuestbook(
+			long userId, long guestbookId, String name,
+			ServiceContext serviceContext)
+		throws PortalException, SystemException;
 
 }
