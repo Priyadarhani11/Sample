@@ -1,0 +1,6 @@
+Bundle-Name: Org-Pro-service
+Bundle-SymbolicName: com.demo.org.service
+Bundle-Version: 1.0.0
+Liferay-Require-SchemaVersion: 1.0.0
+Liferay-Service: true
+-dsannotations-options: inherit

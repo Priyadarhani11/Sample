@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<custom-sql>
+	<sql id="getBankAllDetails"> 
+      <![CDATA[ 
+         SELECT b.bankId, b.bankName, b.bankAddress, e.employeeName, e.employeeAddress, e.employeePhoneNo,
+		d.departmentNo, d.departmentName FROM dxp.org_bank b 
+		INNER JOIN dxp.org_employee e ON b.bankId = e.bankId 
+		INNER JOIN dxp.org_department d ON e.employeeId = d.employeeId WHERE b.bankName = ?
+]]>
+	</sql>
+	<sql id="getEmployeeByName">
+ <![CDATA[ 
+		SELECT employeeId, employeeName, employeeAddress, employeePhoneNo
+		FROM dxp.org_employee
+		WHERE employeeName = ?
+		]]>
+	</sql>
+</custom-sql>

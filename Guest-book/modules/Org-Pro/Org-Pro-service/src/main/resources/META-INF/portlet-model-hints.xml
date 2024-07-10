@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.demo.org.model.Bank">
+		<field name="uuid" type="String" />
+		<field name="bankId" type="long" />
+		<field name="bankName" type="String" />
+		<field name="bankAddress" type="String" />
+	</model>
+	<model name="com.demo.org.model.Department">
+		<field name="uuid" type="String" />
+		<field name="departmentId" type="long" />
+		<field name="departmentNo" type="String" />
+		<field name="departmentName" type="String" />
+		<field name="departmentAddress" type="String" />
+		<field name="departmentPin" type="int" />
+		<field name="employeeId" type="long" />
+		<field name="bankId" type="long" />
+	</model>
+	<model name="com.demo.org.model.Employee">
+		<field name="uuid" type="String" />
+		<field name="employeeId" type="long" />
+		<field name="employeeName" type="String" />
+		<field name="employeeAddress" type="String" />
+		<field name="employeePhoneNo" type="long" />
+		<field name="employeePinNo" type="int" />
+		<field name="bankId" type="long" />
+	</model>
+</model-hints>

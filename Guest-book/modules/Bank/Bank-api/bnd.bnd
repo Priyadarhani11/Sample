@@ -1,0 +1,10 @@
+Bundle-Name: Bank-api
+Bundle-SymbolicName: com.demo.bank.api
+Bundle-Version: 1.0.0
+Export-Package: \
+	com.demo.bank.exception,\
+	com.demo.bank.model,\
+	com.demo.bank.service,\
+	com.demo.bank.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../Bank-service/service.xml

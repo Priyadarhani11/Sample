@@ -1,0 +1,4 @@
+Bundle-Name: custom-sql-portlet
+Bundle-SymbolicName: com.custon
+Bundle-Version: 1.0.0
+Export-Package: com.custon.constants

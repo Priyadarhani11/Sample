@@ -1,0 +1,10 @@
+Bundle-Name: Org-Pro-api
+Bundle-SymbolicName: com.demo.org.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.demo.org.exception,\
+	com.demo.org.model,\
+	com.demo.org.service,\
+	com.demo.org.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../Org-Pro-service/service.xml

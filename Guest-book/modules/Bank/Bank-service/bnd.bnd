@@ -1,0 +1,6 @@
+Bundle-Name: Bank-service
+Bundle-SymbolicName: com.demo.bank.service
+Bundle-Version: 1.0.0
+Liferay-Require-SchemaVersion: 1.0.0
+Liferay-Service: true
+-dsannotations-options: inherit
