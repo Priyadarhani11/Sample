@@ -1,0 +1,5 @@
+Bundle-Name: web-content-hook
+Bundle-SymbolicName: web.content.hook
+Bundle-Version: 1.0.0
+Fragment-Host: com.liferay.journal.web;bundle-version="5.0.142"
+Portal-Bundle-Version: 7.4.13

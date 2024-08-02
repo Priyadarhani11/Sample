@@ -1,0 +1,4 @@
+Bundle-Name: custom-web-hooks
+Bundle-SymbolicName: com.custom.hooks
+Bundle-Version: 1.0.0
+Export-Package: com.custom.hooks.constants

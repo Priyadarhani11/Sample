@@ -10,6 +10,11 @@
 		<column name="bankName" type="String" />
 		<column name="bankAddress" type="String" />
 		
+		<!-- Finder method-->
+		<finder return-type="Collection" name="bankName">
+		<finder-column name="bankName"></finder-column>
+		</finder>
+		
 	</entity>
 	
 	<entity local-service="true" name="Employee" remote-service="true" uuid="true">
@@ -29,5 +34,8 @@
 		<column name="departmentPin" type="int" />
 		<column name="employeeId" type="long" />
 		<column name="bankId" type="long" />
+		
+		
+		
 	</entity>	
 </service-builder>

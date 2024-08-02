@@ -9,11 +9,14 @@
 		INNER JOIN dxp.org_department d ON e.employeeId = d.employeeId WHERE b.bankName = ?
 ]]>
 	</sql>
-	<sql id="getEmployeeByName">
+	<sql id="getBankByName">
  <![CDATA[ 
-		SELECT employeeId, employeeName, employeeAddress, employeePhoneNo
-		FROM dxp.org_employee
-		WHERE employeeName = ?
+		SELECT b.bankId, b.bankName, b.bankAddress, e.employeeName, e.employeeAddress, e.employeePhoneNo,
+		d.departmentNo, d.departmentName 
+		FROM dxp.org_bank b 
+		LEFT JOIN dxp.org_employee e ON b.bankId = e.bankId 
+		LEFT JOIN dxp.org_department d ON e.employeeId = d.employeeId 
+		WHERE b.bankName = ?
 		]]>
 	</sql>
 </custom-sql>

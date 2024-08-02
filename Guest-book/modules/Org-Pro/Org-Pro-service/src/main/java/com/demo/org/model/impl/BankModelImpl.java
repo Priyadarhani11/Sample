@@ -91,14 +91,20 @@ public class BankModelImpl extends BaseModelImpl<Bank> implements BankModel {
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long UUID_COLUMN_BITMASK = 1L;
+	public static final long BANKNAME_COLUMN_BITMASK = 1L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long BANKID_COLUMN_BITMASK = 2L;
+	public static final long BANKID_COLUMN_BITMASK = 4L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -300,6 +306,15 @@ public class BankModelImpl extends BaseModelImpl<Bank> implements BankModel {
 		}
 
 		_bankName = bankName;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public String getOriginalBankName() {
+		return getColumnOriginalValue("bankName");
 	}
 
 	@JSON

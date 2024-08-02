@@ -1,0 +1,10 @@
+Bundle-Name: User-info-builder-api
+Bundle-SymbolicName: com.user.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.user.exception,\
+	com.user.model,\
+	com.user.service,\
+	com.user.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../User-info-builder-service/service.xml

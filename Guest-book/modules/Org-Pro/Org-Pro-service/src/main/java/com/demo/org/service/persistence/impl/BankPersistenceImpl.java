@@ -609,6 +609,536 @@ public class BankPersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_UUID_3 =
 		"(bank.uuid IS NULL OR bank.uuid = '')";
 
+	private FinderPath _finderPathWithPaginationFindBybankName;
+	private FinderPath _finderPathWithoutPaginationFindBybankName;
+	private FinderPath _finderPathCountBybankName;
+
+	/**
+	 * Returns all the banks where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @return the matching banks
+	 */
+	@Override
+	public List<Bank> findBybankName(String bankName) {
+		return findBybankName(
+			bankName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the banks where bankName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BankModelImpl</code>.
+	 * </p>
+	 *
+	 * @param bankName the bank name
+	 * @param start the lower bound of the range of banks
+	 * @param end the upper bound of the range of banks (not inclusive)
+	 * @return the range of matching banks
+	 */
+	@Override
+	public List<Bank> findBybankName(String bankName, int start, int end) {
+		return findBybankName(bankName, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the banks where bankName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BankModelImpl</code>.
+	 * </p>
+	 *
+	 * @param bankName the bank name
+	 * @param start the lower bound of the range of banks
+	 * @param end the upper bound of the range of banks (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching banks
+	 */
+	@Override
+	public List<Bank> findBybankName(
+		String bankName, int start, int end,
+		OrderByComparator<Bank> orderByComparator) {
+
+		return findBybankName(bankName, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the banks where bankName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BankModelImpl</code>.
+	 * </p>
+	 *
+	 * @param bankName the bank name
+	 * @param start the lower bound of the range of banks
+	 * @param end the upper bound of the range of banks (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching banks
+	 */
+	@Override
+	public List<Bank> findBybankName(
+		String bankName, int start, int end,
+		OrderByComparator<Bank> orderByComparator, boolean useFinderCache) {
+
+		bankName = Objects.toString(bankName, "");
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindBybankName;
+				finderArgs = new Object[] {bankName};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindBybankName;
+			finderArgs = new Object[] {bankName, start, end, orderByComparator};
+		}
+
+		List<Bank> list = null;
+
+		if (useFinderCache) {
+			list = (List<Bank>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Bank bank : list) {
+					if (!bankName.equals(bank.getBankName())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_BANK_WHERE);
+
+			boolean bindBankName = false;
+
+			if (bankName.isEmpty()) {
+				sb.append(_FINDER_COLUMN_BANKNAME_BANKNAME_3);
+			}
+			else {
+				bindBankName = true;
+
+				sb.append(_FINDER_COLUMN_BANKNAME_BANKNAME_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(BankModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindBankName) {
+					queryPos.add(bankName);
+				}
+
+				list = (List<Bank>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first bank in the ordered set where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching bank
+	 * @throws NoSuchBankException if a matching bank could not be found
+	 */
+	@Override
+	public Bank findBybankName_First(
+			String bankName, OrderByComparator<Bank> orderByComparator)
+		throws NoSuchBankException {
+
+		Bank bank = fetchBybankName_First(bankName, orderByComparator);
+
+		if (bank != null) {
+			return bank;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("bankName=");
+		sb.append(bankName);
+
+		sb.append("}");
+
+		throw new NoSuchBankException(sb.toString());
+	}
+
+	/**
+	 * Returns the first bank in the ordered set where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching bank, or <code>null</code> if a matching bank could not be found
+	 */
+	@Override
+	public Bank fetchBybankName_First(
+		String bankName, OrderByComparator<Bank> orderByComparator) {
+
+		List<Bank> list = findBybankName(bankName, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last bank in the ordered set where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching bank
+	 * @throws NoSuchBankException if a matching bank could not be found
+	 */
+	@Override
+	public Bank findBybankName_Last(
+			String bankName, OrderByComparator<Bank> orderByComparator)
+		throws NoSuchBankException {
+
+		Bank bank = fetchBybankName_Last(bankName, orderByComparator);
+
+		if (bank != null) {
+			return bank;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("bankName=");
+		sb.append(bankName);
+
+		sb.append("}");
+
+		throw new NoSuchBankException(sb.toString());
+	}
+
+	/**
+	 * Returns the last bank in the ordered set where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching bank, or <code>null</code> if a matching bank could not be found
+	 */
+	@Override
+	public Bank fetchBybankName_Last(
+		String bankName, OrderByComparator<Bank> orderByComparator) {
+
+		int count = countBybankName(bankName);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Bank> list = findBybankName(
+			bankName, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the banks before and after the current bank in the ordered set where bankName = &#63;.
+	 *
+	 * @param bankId the primary key of the current bank
+	 * @param bankName the bank name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next bank
+	 * @throws NoSuchBankException if a bank with the primary key could not be found
+	 */
+	@Override
+	public Bank[] findBybankName_PrevAndNext(
+			long bankId, String bankName,
+			OrderByComparator<Bank> orderByComparator)
+		throws NoSuchBankException {
+
+		bankName = Objects.toString(bankName, "");
+
+		Bank bank = findByPrimaryKey(bankId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Bank[] array = new BankImpl[3];
+
+			array[0] = getBybankName_PrevAndNext(
+				session, bank, bankName, orderByComparator, true);
+
+			array[1] = bank;
+
+			array[2] = getBybankName_PrevAndNext(
+				session, bank, bankName, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Bank getBybankName_PrevAndNext(
+		Session session, Bank bank, String bankName,
+		OrderByComparator<Bank> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_BANK_WHERE);
+
+		boolean bindBankName = false;
+
+		if (bankName.isEmpty()) {
+			sb.append(_FINDER_COLUMN_BANKNAME_BANKNAME_3);
+		}
+		else {
+			bindBankName = true;
+
+			sb.append(_FINDER_COLUMN_BANKNAME_BANKNAME_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(BankModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		if (bindBankName) {
+			queryPos.add(bankName);
+		}
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(bank)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<Bank> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the banks where bankName = &#63; from the database.
+	 *
+	 * @param bankName the bank name
+	 */
+	@Override
+	public void removeBybankName(String bankName) {
+		for (Bank bank :
+				findBybankName(
+					bankName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(bank);
+		}
+	}
+
+	/**
+	 * Returns the number of banks where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @return the number of matching banks
+	 */
+	@Override
+	public int countBybankName(String bankName) {
+		bankName = Objects.toString(bankName, "");
+
+		FinderPath finderPath = _finderPathCountBybankName;
+
+		Object[] finderArgs = new Object[] {bankName};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_BANK_WHERE);
+
+			boolean bindBankName = false;
+
+			if (bankName.isEmpty()) {
+				sb.append(_FINDER_COLUMN_BANKNAME_BANKNAME_3);
+			}
+			else {
+				bindBankName = true;
+
+				sb.append(_FINDER_COLUMN_BANKNAME_BANKNAME_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindBankName) {
+					queryPos.add(bankName);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_BANKNAME_BANKNAME_2 =
+		"bank.bankName = ?";
+
+	private static final String _FINDER_COLUMN_BANKNAME_BANKNAME_3 =
+		"(bank.bankName IS NULL OR bank.bankName = '')";
+
 	public BankPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -1147,6 +1677,24 @@ public class BankPersistenceImpl
 		_finderPathCountByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
 			new String[] {String.class.getName()}, new String[] {"uuid_"},
+			false);
+
+		_finderPathWithPaginationFindBybankName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBybankName",
+			new String[] {
+				String.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"bankName"}, true);
+
+		_finderPathWithoutPaginationFindBybankName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBybankName",
+			new String[] {String.class.getName()}, new String[] {"bankName"},
+			true);
+
+		_finderPathCountBybankName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBybankName",
+			new String[] {String.class.getName()}, new String[] {"bankName"},
 			false);
 
 		BankUtil.setPersistence(this);

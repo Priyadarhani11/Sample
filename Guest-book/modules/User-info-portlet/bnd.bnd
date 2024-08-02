@@ -1,0 +1,4 @@
+Bundle-Name: User-info-portlet
+Bundle-SymbolicName: com.user.info
+Bundle-Version: 1.0.0
+Export-Package: com.user.info.constants

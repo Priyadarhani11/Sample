@@ -199,6 +199,10 @@ public class BankLocalServiceUtil {
 		return getService().fetchBank(bankId);
 	}
 
+	public static List<Bank> findByBankName(String bankName) {
+		return getService().findByBankName(bankName);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 

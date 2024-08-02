@@ -175,6 +175,149 @@ public interface BankPersistence extends BasePersistence<Bank> {
 	public int countByUuid(String uuid);
 
 	/**
+	 * Returns all the banks where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @return the matching banks
+	 */
+	public java.util.List<Bank> findBybankName(String bankName);
+
+	/**
+	 * Returns a range of all the banks where bankName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BankModelImpl</code>.
+	 * </p>
+	 *
+	 * @param bankName the bank name
+	 * @param start the lower bound of the range of banks
+	 * @param end the upper bound of the range of banks (not inclusive)
+	 * @return the range of matching banks
+	 */
+	public java.util.List<Bank> findBybankName(
+		String bankName, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the banks where bankName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BankModelImpl</code>.
+	 * </p>
+	 *
+	 * @param bankName the bank name
+	 * @param start the lower bound of the range of banks
+	 * @param end the upper bound of the range of banks (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching banks
+	 */
+	public java.util.List<Bank> findBybankName(
+		String bankName, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Bank>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the banks where bankName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BankModelImpl</code>.
+	 * </p>
+	 *
+	 * @param bankName the bank name
+	 * @param start the lower bound of the range of banks
+	 * @param end the upper bound of the range of banks (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching banks
+	 */
+	public java.util.List<Bank> findBybankName(
+		String bankName, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Bank>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first bank in the ordered set where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching bank
+	 * @throws NoSuchBankException if a matching bank could not be found
+	 */
+	public Bank findBybankName_First(
+			String bankName,
+			com.liferay.portal.kernel.util.OrderByComparator<Bank>
+				orderByComparator)
+		throws NoSuchBankException;
+
+	/**
+	 * Returns the first bank in the ordered set where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching bank, or <code>null</code> if a matching bank could not be found
+	 */
+	public Bank fetchBybankName_First(
+		String bankName,
+		com.liferay.portal.kernel.util.OrderByComparator<Bank>
+			orderByComparator);
+
+	/**
+	 * Returns the last bank in the ordered set where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching bank
+	 * @throws NoSuchBankException if a matching bank could not be found
+	 */
+	public Bank findBybankName_Last(
+			String bankName,
+			com.liferay.portal.kernel.util.OrderByComparator<Bank>
+				orderByComparator)
+		throws NoSuchBankException;
+
+	/**
+	 * Returns the last bank in the ordered set where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching bank, or <code>null</code> if a matching bank could not be found
+	 */
+	public Bank fetchBybankName_Last(
+		String bankName,
+		com.liferay.portal.kernel.util.OrderByComparator<Bank>
+			orderByComparator);
+
+	/**
+	 * Returns the banks before and after the current bank in the ordered set where bankName = &#63;.
+	 *
+	 * @param bankId the primary key of the current bank
+	 * @param bankName the bank name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next bank
+	 * @throws NoSuchBankException if a bank with the primary key could not be found
+	 */
+	public Bank[] findBybankName_PrevAndNext(
+			long bankId, String bankName,
+			com.liferay.portal.kernel.util.OrderByComparator<Bank>
+				orderByComparator)
+		throws NoSuchBankException;
+
+	/**
+	 * Removes all the banks where bankName = &#63; from the database.
+	 *
+	 * @param bankName the bank name
+	 */
+	public void removeBybankName(String bankName);
+
+	/**
+	 * Returns the number of banks where bankName = &#63;.
+	 *
+	 * @param bankName the bank name
+	 * @return the number of matching banks
+	 */
+	public int countBybankName(String bankName);
+
+	/**
 	 * Caches the bank in the entity cache if it is enabled.
 	 *
 	 * @param bank the bank

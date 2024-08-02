@@ -191,6 +191,8 @@ public interface BankLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Bank fetchBank(long bankId);
 
+	public List<Bank> findByBankName(String bankName);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 

@@ -214,6 +214,13 @@ public class BankLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.demo.org.model.Bank> findByBankName(
+		String bankName) {
+
+		return _bankLocalService.findByBankName(bankName);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 

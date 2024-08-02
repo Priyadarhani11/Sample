@@ -230,9 +230,7 @@ public class NewUserPortlet extends MVCPortlet {
 			if (file != null) {
 				UserLocalServiceUtil.updatePortrait(user.getUserId(), portraitByte);
 			}
-//			        setExpandoValue(user.getUserId(), companyId, "aadhaarCard", aadhaarCard);
-//					setExpandoValue(user.getUserId(), companyId, "panCard", panCard);
-
+//			       
 			user.getExpandoBridge().addAttribute("aadhaarCard", ExpandoColumnConstants.STRING, aadhaarCard);
 			user.getExpandoBridge().addAttribute("panCard", ExpandoColumnConstants.STRING, panCard);
 			logger.info("After ::::::::::::::::::::::::: Added :::::::::::::::::::::::::::user");
@@ -293,15 +291,3 @@ public class NewUserPortlet extends MVCPortlet {
 	}
 }
 
-//	private void setExpandoValue(long userId, long companyId, String attributeName, String attributeValue) throws PortalException {
-//		ExpandoTable table = ExpandoTableLocalServiceUtil.addDefaultTable(companyId, User.class.getName());
-//
-//		ExpandoValue expandoValue = ExpandoValueLocalServiceUtil.getValue(companyId, User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME, attributeName, userId);
-//
-//		if (expandoValue == null) {
-//			ExpandoValueLocalServiceUtil.addValue(companyId, User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME, attributeName, userId, attributeValue);
-//		} else {
-//			ExpandoValueLocalServiceUtil.addValue(companyId, User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME, attributeName, userId, attributeValue);
-//		}
-
-//}

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.user.model.Excel">
+		<field name="uuid" type="String" />
+		<field name="excelId" type="long" />
+		<field name="name" type="String" />
+		<field name="address" type="String" />
+		<field name="phoneNumber" type="long" />
+	</model>
+</model-hints>

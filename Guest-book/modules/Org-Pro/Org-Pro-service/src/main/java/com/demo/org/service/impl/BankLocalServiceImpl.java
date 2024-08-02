@@ -23,6 +23,11 @@ import org.osgi.service.component.annotations.Component;
 )
 public class BankLocalServiceImpl extends BankLocalServiceBaseImpl {
 	
+	public List<Bank> findByBankName(String bankName) {
+		return bankPersistence.findBybankName(bankName);
+	}
+	
+	
 	public List<Bank> getBankAllDetails(String bankName) {
 		return bankFinder.getBankAllDetails(bankName);
 		

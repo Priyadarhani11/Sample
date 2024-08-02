@@ -5,8 +5,12 @@ import com.demo.org.model.Bank;
 import com.demo.org.model.Department;
 import com.demo.org.model.Employee;
 import com.demo.org.service.BankLocalService;
+import com.demo.org.service.BankLocalServiceUtil;
 import com.demo.org.service.DepartmentLocalService;
 import com.demo.org.service.EmployeeLocalService;
+import com.liferay.portal.kernel.dao.orm.Criterion;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
@@ -67,6 +71,26 @@ public class CustomSqlPortlet extends MVCPortlet {
 		renderRequest.setAttribute("employeeList", employeeList);
 		renderRequest.setAttribute("departmentList", departmentList);
 		
+		 // Use finder method
+		
+		/*
+		 * List<Bank> bankListByName = bankLocalService.findByName(bankName);
+		 * renderRequest.setAttribute("bankListByName", bankListByName);
+		 */
+		
+		//dynamic query
+		/*
+		 * DynamicQuery bankList1 = BankLocalServiceUtil.dynamicQuery(); Criterion
+		 * criterion = RestrictionsFactoryUtil.eq("bankName", "PNB"); criterion =
+		 * RestrictionsFactoryUtil.and(criterion,
+		 * RestrictionsFactoryUtil.eq("bankAddress", "Bangalore")); bankList1.add
+		 * (criterion);
+		 * 
+		 * List<Bank> bankList2 = BankLocalServiceUtil.dynamicQuery(bankList1);
+		 * renderRequest.setAttribute("bankList2", bankList2);
+		 */
+		String bankName1 = bankLocalService.findByBankName("PNB").get(0).getBankName();
+		System.out.println("Bank name : " + bankName1);
 		
 		super.render(renderRequest, renderResponse);
 	}
