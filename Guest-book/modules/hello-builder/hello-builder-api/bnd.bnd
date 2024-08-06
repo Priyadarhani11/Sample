@@ -1,0 +1,10 @@
+Bundle-Name: hello-builder-api
+Bundle-SymbolicName: com.hello.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.hello.exception,\
+	com.hello.model,\
+	com.hello.service,\
+	com.hello.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../hello-builder-service/service.xml

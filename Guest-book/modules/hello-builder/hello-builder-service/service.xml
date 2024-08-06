@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.4.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_4_0.dtd">
+
+<service-builder dependency-injector="spring" package-path="com.hello" auto-namespace-tables="false">
+	<namespace>HELLO</namespace>
+	<entity local-service="true" name="Employee" remote-service="true" uuid="true" table="employee" data-source="extDataSource">
+
+		<!-- PK fields -->
+        <column name="employeeId" primary="true" type="int"></column>
+        <column name="employeeName" type="String"></column>
+	</entity>
+</service-builder>
