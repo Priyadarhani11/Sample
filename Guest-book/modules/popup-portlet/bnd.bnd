@@ -1,0 +1,4 @@
+Bundle-Name: popup-portlet
+Bundle-SymbolicName: com.test.popup
+Bundle-Version: 1.0.0
+Export-Package: com.test.popup.constants
