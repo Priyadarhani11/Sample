@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.4.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_4_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="com.student.permission">
+	<namespace>DEMO</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="Foo" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity local-service="true" name="Student" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="studentId" primary="true" type="long" />
+
+       <column name="groupId" type="long"/>
+       <column name="companyId" type="long"/>
+       <column name="studentName" type="String"/>
+       <column name="studentMobileNumber" type="String"/>
+       <column name="studentDesignation" type="String"/>
+       <column name="studentphoto" type="String"/>
+       <column name="createDate" type="Date"/>
+       <column name="modifiedDate" type="Date"/>
+       
+<!--          Finder Method  -->	
+<finder  name="studentDesignation"  return-type="Collection" >
+<finder-column name="studentDesignation"/>
+</finder>
+
+	
+	</entity>
+</service-builder>

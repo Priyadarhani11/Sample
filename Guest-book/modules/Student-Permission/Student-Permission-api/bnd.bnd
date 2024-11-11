@@ -1,0 +1,10 @@
+Bundle-Name: Student-Permission-api
+Bundle-SymbolicName: com.student.permission.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.student.permission.exception,\
+	com.student.permission.model,\
+	com.student.permission.service,\
+	com.student.permission.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../Student-Permission-service/service.xml

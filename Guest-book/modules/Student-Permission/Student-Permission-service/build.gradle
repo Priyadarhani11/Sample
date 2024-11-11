@@ -1,0 +1,11 @@
+dependencies {
+	compile project(":modules:Student-Permission:Student-Permission-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.dxp.api"
+}
+
+buildService {
+	apiDir = "../Student-Permission-api/src/main/java"
+}
+
+group = "com.student.permission"
