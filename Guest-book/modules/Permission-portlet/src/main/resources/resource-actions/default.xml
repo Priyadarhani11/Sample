@@ -6,11 +6,11 @@
 <portlet-name>com_permission_PermissionPortlet</portlet-name>
 <permissions>
 <supports>
-<action-key>ADD_DETAILS</action-key>
+<action-key>ADD_STUDENT</action-key>
 <action-key>DEL_DETAILS</action-key>
 </supports>
 <guest-unsupported>
-<action-key>ADD_DETAILS</action-key>
+<action-key>ADD_STUDENT</action-key>
 <action-key>DEL_DETAILS</action-key>
 </guest-unsupported>
 </permissions>

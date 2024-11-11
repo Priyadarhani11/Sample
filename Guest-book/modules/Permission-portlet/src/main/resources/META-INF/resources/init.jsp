@@ -7,9 +7,16 @@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
 
-<c:set var="ADD_DETAILS" value="ADD_DETAILS" />
-<c:set var="DEL_DETAILS" value="DEL_DETAILS" />
+<c:set var="ADD_STUDENT" value="ADD_STUDENT" />
+<c:set var="UPDATE_STUDENT" value="UPDATE_STUDENT" />
+<c:set var="VIEW_STUDENT" value="VIEW_STUDENT" />
+<c:set var="DELETE_STUDENTE" value="DELETE_STUDENT" />
