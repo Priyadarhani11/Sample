@@ -1,0 +1,6 @@
+Bundle-Name: students-rest
+Bundle-SymbolicName: com.students.rest
+Bundle-Version: 1.0.0
+Liferay-Configuration-Path: /configuration
+Export-Package: com.students.rest.application
+Import-Package: org.*;resolution:=dynamic, *

@@ -1,0 +1,10 @@
+Bundle-Name: Dualdb-builder-api
+Bundle-SymbolicName: com.dualdb.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.dualdb.exception,\
+	com.dualdb.model,\
+	com.dualdb.service,\
+	com.dualdb.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../Dualdb-builder-service/service.xml

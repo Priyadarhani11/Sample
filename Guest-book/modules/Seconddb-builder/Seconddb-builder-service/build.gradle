@@ -1,0 +1,11 @@
+dependencies {
+	compile project(":modules:Seconddb-builder:Seconddb-builder-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.dxp.api"
+}
+
+buildService {
+	apiDir = "../Seconddb-builder-api/src/main/java"
+}
+
+group = "com.seconddb"

@@ -1,0 +1,135 @@
+info:
+    description: "StudentHeadlessDelivery REST API"
+    license:
+        name: "Apache 2.0"
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    title: "StudentHeadlessDelivery"
+    version: v1.0
+openapi: 3.0.1
+components:
+    schemas:
+      Student:
+        description: 
+          Represent student apis.
+        properties:
+          id:
+            type: integer
+            format: int64
+          name:
+            type: string
+          standard:
+            type: string
+          message:
+            type: object
+            readOnly: true
+          data:
+            type: object
+        type: object
+paths:
+  "/get-student":
+    get:
+      operationId: getStudent
+      tags: ["Student"]
+      description: get student
+      summary: "get student"
+      responses:
+        '200':
+          description: Student listed successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Student"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/Student"
+        '403':
+          description: No student were found
+        '404':
+          description: API not found
+  "/add-student":
+    post:
+      operationId: addStudent
+      tags: ["Student"]
+      description: add student
+      summary: "add student"
+      requestBody:
+        description: add student
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/Student"
+          application/xml:
+            schema:
+                $ref: "#/components/schemas/Student"
+      responses:
+        '200':
+          description: Student added successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Student"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/Student"
+        '403':
+          description: No student were found
+        '404':
+          description: API not found
+  "/update-student":
+    put: 
+      operationId: updateStudent
+      tags: ["Student"]
+      description: update student
+      summary: "update student"
+      requestBody:
+        description: update student
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/Student"
+          application/xml:
+            schema:
+                $ref: "#/components/schemas/Student"
+      responses:
+        '200':
+          description: Student updated successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Student"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/Student"
+        '403':
+          description: No student were found
+        '404':
+          description: API not found
+  "/delete-student":
+    delete:
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      operationId: deleteStudent
+      tags: ["Student"]
+      description: delete student
+      summary: "delete student"
+      responses:
+        '200':
+          description: Student deleted successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Student"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/Student"
+        '403':
+          description: No student were found
+        '404':
+          description: API not found

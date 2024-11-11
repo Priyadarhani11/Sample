@@ -1,0 +1,10 @@
+Bundle-Name: student-headless-builder-api
+Bundle-SymbolicName: student.headless.builder.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	student.headless.builder.exception,\
+	student.headless.builder.model,\
+	student.headless.builder.service,\
+	student.headless.builder.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../student-headless-builder-service/service.xml

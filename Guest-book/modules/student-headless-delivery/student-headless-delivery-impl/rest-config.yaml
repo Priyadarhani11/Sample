@@ -1,0 +1,7 @@
+apiDir: "../student-headless-delivery-api/src/main/java"
+apiPackagePath: "com.headless.student"
+application:
+    baseURI: "/student-headless-delivery"
+    className: "StudentHeadlessDeliveryApplication"
+    name: "StudentHeadlessDelivery"
+author: "Dell"

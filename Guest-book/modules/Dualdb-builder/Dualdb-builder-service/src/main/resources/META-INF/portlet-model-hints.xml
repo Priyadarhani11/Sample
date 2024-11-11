@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.dualdb.model.Professor">
+		<field name="uuid" type="String" />
+		<field name="pId" type="int" />
+		<field name="pName" type="String" />
+	</model>
+</model-hints>

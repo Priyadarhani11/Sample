@@ -1,0 +1,4 @@
+Bundle-Name: student-rest
+Bundle-SymbolicName: com.student.rest
+Bundle-Version: 1.0.0
+Liferay-Configuration-Path: /configuration

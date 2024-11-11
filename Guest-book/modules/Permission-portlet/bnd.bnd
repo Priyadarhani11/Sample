@@ -1,0 +1,4 @@
+Bundle-Name: Permission-portlet
+Bundle-SymbolicName: com.permission
+Bundle-Version: 1.0.0
+Export-Package: com.permission.constants

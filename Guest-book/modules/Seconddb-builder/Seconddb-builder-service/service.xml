@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.4.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_4_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="com.seconddb" auto-namespace-tables="false">
+	<namespace>TEST</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="Foo" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity local-service="true" name="Student" remote-service="true" uuid="true" table="students" data-source="extDataSource">
+
+		<!-- PK fields -->
+
+		 <column name="studentId" primary="true" type="int"></column>
+        <column name="studentName" type="String"></column>
+		
+	</entity>
+</service-builder>

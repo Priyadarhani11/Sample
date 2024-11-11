@@ -1,0 +1,3 @@
+Bundle-Name: student-headless-delivery-impl
+Bundle-SymbolicName: com.headless.student.impl
+Bundle-Version: 1.0.0

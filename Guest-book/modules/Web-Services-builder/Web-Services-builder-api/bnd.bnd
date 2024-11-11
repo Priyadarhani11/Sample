@@ -1,0 +1,10 @@
+Bundle-Name: Web-Services-builder-api
+Bundle-SymbolicName: Web.Services.builder.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	Web.Services.builder.exception,\
+	Web.Services.builder.model,\
+	Web.Services.builder.service,\
+	Web.Services.builder.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../Web-Services-builder-service/service.xml

@@ -1,0 +1,4 @@
+Bundle-Name: Second-portlet
+Bundle-SymbolicName: com.second.student
+Bundle-Version: 1.0.0
+Export-Package: com.second.student.constants

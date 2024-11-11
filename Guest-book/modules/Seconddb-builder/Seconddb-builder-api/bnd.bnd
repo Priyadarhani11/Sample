@@ -1,0 +1,10 @@
+Bundle-Name: Seconddb-builder-api
+Bundle-SymbolicName: com.seconddb.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.seconddb.exception,\
+	com.seconddb.model,\
+	com.seconddb.service,\
+	com.seconddb.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../Seconddb-builder-service/service.xml
